@@ -1,0 +1,54 @@
+
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap");
+
+@import "tailwindcss";
+
+@theme {
+
+  --color-yellow: oklch(0.9188 0.1838 115.45); 
+  /* #e0f24b */
+  --color-yellowBlack: oklch(0.3012 0.0573 119.07); 
+  /*#2b320d*/
+  --color-darkBlue: oklch(0.2599 0.0604 251.32);
+  /*#0A2540*/
+  --color-Green:oklch(0.7428 0.1967 151.64);
+  /*  #02cd68*/
+  --color-lightGreen: oklch(0.7592 0.2002 151.77);
+    /*  #04d36c*/
+  --color-lightYellow: oklch(0.8561 0.1653 132.22);
+  /* #a6e66e*/
+
+  --font-montserrat: "Montserrat", system-ui, sans-serif;
+
+}
+
+body {
+  background-color: #FCFDE6;
+  font-family: var(--font-montserrat);
+}
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Infinite horizontal scroll */
+@keyframes logo-marquee {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.logo-marquee-wrapper {
+  overflow: hidden;
+}
+
+.logo-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: logo-marquee 20s linear infinite;
+}
