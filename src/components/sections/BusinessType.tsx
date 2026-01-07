@@ -86,7 +86,10 @@ function BusinessType() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
           {/* card */}
           {cards.map((card, id) => (
-            <div key={id} className="border p-5 bg-Green">
+            <div
+              key={id}
+              className="border p-5 bg-Green shadow-[6px_6px_0px_0px_rgba(255,255,0,1)]"
+            >
               <div>
                 <h3 className="text-xl md:text-[36px] text-darkBlue border-l-5 border-yellow pl-3">
                   {card.title}
