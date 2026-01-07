@@ -97,9 +97,9 @@ function MobileSec() {
           <div className="hidden md:flex relative bottom-60 bg-yellow p-5  border-2">
             {trusts.map((trust, id) => (
               <div key={id}>
-                <h1 className="md:text-2xl lg:text-[36px] font-bold text-[#0A2540] border-l-5 pl-3 border-[#02CD68]">
+                <h2 className="md:text-2xl lg:text-[36px] font-bold text-[#0A2540] border-l-5 pl-3 border-[#02CD68]">
                   {trust.title}
-                </h1>
+                </h2>
                 <p className="md:text-sm lg:text-[18px] text-[#0A2540]">
                   {trust.desc}
                 </p>

@@ -39,9 +39,9 @@ export default function Navbar() {
   return (
     <nav
       ref={navRef}
-      className="relative w-full bg-[#E3F451] border-b border-gray-200 lg:px-2 py-4"
+      className="relative w-full bg-[#E3F451] border-b border-gray-200  py-4"
     >
-      <div className=" container mx-auto lg:px-5 flex items-center justify-between">
+      <div className=" container mx-auto px-5 flex items-center justify-between">
         <div className="flex-shrink-0">
           <Link href="/" className="flex items-center gap-1">
             <img

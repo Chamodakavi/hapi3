@@ -52,3 +52,64 @@ body {
   width: max-content;
   animation: logo-marquee 20s linear infinite;
 }
+
+/* @layer base{
+  :root{
+    font-size: 90%;
+  }
+
+  h1{
+    font-size: 500% !important;
+  }
+
+  h2{
+    font-size: 250% !important;
+  }
+  p{
+    font-size: 120% !important;
+  }
+} */
+@layer base {
+  
+
+  h2{
+    font-size: 150% !important;
+  }
+  p {
+    font-size: 100% !important;
+    /* Mobile: 15% smaller */
+  }
+
+  @media (min-width: 768px) {
+    h1{
+      font-size: 400% !important;
+    }
+
+    h2{
+      font-size: 150% !important;
+    }
+    p {
+      font-size: 100% !important;
+      /* Tablet: 8% smaller */
+    }
+  }
+
+  @media (min-width: 1024px) {
+
+  :root {
+    font-size: 90%;
+  }
+
+  h1 {
+    font-size: 500% !important;
+  }
+
+  h2 {
+    font-size: 250% !important;
+  }
+
+  p {
+    font-size: 120% !important;
+  }
+  }
+}

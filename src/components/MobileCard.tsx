@@ -30,7 +30,7 @@ function MobileCard({
     >
       {/* left image */}
       {isLeftImage && (
-        <div className="lg:w-[422px] lg:h-[733px]  justify-center hidden sm:flex">
+        <div className="lg:w-[422px] lg:h-[633px]  justify-center hidden sm:flex">
           <img
             src={image}
             alt={title}
@@ -60,7 +60,7 @@ function MobileCard({
       </div>
       {/* right image */}
       {!isLeftImage && (
-        <div className="lg:w-[422px] lg:h-[833px] hidden sm:flex justify-center">
+        <div className="lg:w-[422px] lg:h-[633px] hidden sm:flex justify-center">
           <img
             src={image}
             alt={title}
