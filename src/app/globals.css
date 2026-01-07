@@ -35,7 +35,7 @@ body {
 /* Infinite horizontal scroll */
 @keyframes logo-marquee {
   0% {
-    transform: translateX(0);
+    transform: translateX(0%);
   }
 
   100% {
@@ -50,7 +50,7 @@ body {
 .logo-marquee-track {
   display: flex;
   width: max-content;
-  animation: logo-marquee 20s linear infinite;
+  animation: logo-marquee 10s linear infinite;
 }
 
 /* @layer base{

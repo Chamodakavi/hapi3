@@ -25,7 +25,7 @@ const companies = [
 function Companies() {
   return (
     <section className="container mx-auto px-5">
-      <div className="flex justify-center md:justify-end my-10 md:w-[80%] md:ml-auto">
+      <div className="flex justify-center md:justify-end my-10 ">
         <div className="logo-marquee-wrapper">
           <div className="logo-marquee-track ">
             {/* First copy */}
@@ -63,7 +63,7 @@ function Companies() {
         </div>
       </div>
       {/* second */}
-      <div className="hidden md:flex my-10 w-[80%] mr-auto">
+      <div className="hidden md:flex my-10 ">
         <div className="logo-marquee-wrapper">
           <div className="logo-marquee-track ">
             {/* First copy */}
