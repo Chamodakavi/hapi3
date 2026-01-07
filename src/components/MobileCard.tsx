@@ -26,15 +26,15 @@ function MobileCard({
   return (
     <div
       key={id}
-      className="flex flex-col sm:flex-row items-center justify-center gap-5 lg:gap-16 my-8 sm:my-20 md:my-28 lg:my-8"
+      className="flex flex-col sm:flex-row items-center justify-center gap-10 lg:gap-45 my-8 sm:my-20 md:my-28 lg:my-8"
     >
       {/* left image */}
       {isLeftImage && (
-        <div className="lg:w-[422px] lg:h-[633px]  justify-center hidden sm:flex">
+        <div className="lg:w-[422px] lg:h-[633px]  justify-start hidden sm:flex">
           <img
             src={image}
             alt={title}
-            className="w-full max-w-[350px] lg:max-w-[400px] object-contain drop-shadow-2xl"
+            className=" object-contain drop-shadow-2xl"
           />
         </div>
       )}
@@ -60,11 +60,11 @@ function MobileCard({
       </div>
       {/* right image */}
       {!isLeftImage && (
-        <div className="lg:w-[422px] lg:h-[633px] hidden sm:flex justify-center">
+        <div className="lg:w-[422px] lg:h-[633px] hidden sm:flex justify-end">
           <img
             src={image}
             alt={title}
-            className="w-full max-w-[350px] lg:max-w-[400px] object-contain drop-shadow-2xl"
+            className="object-contain drop-shadow-2xl"
           />
         </div>
       )}
