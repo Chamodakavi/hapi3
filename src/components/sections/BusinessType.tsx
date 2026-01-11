@@ -62,7 +62,7 @@ const cards = [
 
 function BusinessType() {
   return (
-    <section className="my-10">
+    <section id="businessType" className="my-10">
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row justify-between  gap-6">
           <div className="max-w-4xl">

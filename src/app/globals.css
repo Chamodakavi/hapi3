@@ -21,6 +21,10 @@
   --font-montserrat: "Montserrat", system-ui, sans-serif;
 
 }
+html {
+  /* This enables smooth scrolling for anchor links */
+  scroll-behavior: smooth;
+}
 
 body {
   background-color: #FCFDE6;
@@ -53,22 +57,6 @@ body {
   animation: logo-marquee 10s linear infinite;
 }
 
-/* @layer base{
-  :root{
-    font-size: 90%;
-  }
-
-  h1{
-    font-size: 500% !important;
-  }
-
-  h2{
-    font-size: 250% !important;
-  }
-  p{
-    font-size: 120% !important;
-  }
-} */
 @layer base {
   
 

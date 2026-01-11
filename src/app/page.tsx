@@ -1,3 +1,4 @@
+import Form from "@/components/businessRegistration/Form";
 import BusinessType from "@/components/sections/BusinessType";
 import Companies from "@/components/sections/Companies";
 import GetStarted from "@/components/sections/GetStarted";

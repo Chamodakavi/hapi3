@@ -25,7 +25,7 @@ const companies = [
 
 function Hero() {
   return (
-    <section id="hero" className="mt-8">
+    <section id="home" className="mt-30 lg:mt-35">
       <div className="container mx-auto px-5">
         <div className="grid grid-cols-1 md:grid-cols-2">
           <div className="flex flex-col">
@@ -69,37 +69,6 @@ function Hero() {
             </div>
           </div>
         </div>
-        {/* company scroll section */}
-        {/* <div>
-          <div className="flex flex-wrap justify-center md:justify-end gap-3 md:gap-5 my-10 overflow-hidden">
-            {companies.map((company) => (
-              <div
-                key={company.id}
-                className="w-[100px] h-[50px] sm:w-[120px] sm:h-[60px] md:w-[150px] md:h-[80px] lg:w-[230px] lg:h-[90px] border p-2 bg-yellow flex justify-center items-center"
-              >
-                <img
-                  src={company.image}
-                  alt={company.alt}
-                  className="w-[100px] h-[30px] sm:w-[100px] sm:h-[35px] md:w-[120px] md:h-[40px] lg:w-[154px] lg:h-[48px] object-contain"
-                />
-              </div>
-            ))}
-          </div>
-          <div className="hidden lg:flex flex-wrap justify-center md:justify-start gap-3 md:gap-5 my-10 ">
-            {companies.map((company) => (
-              <div
-                key={company.id}
-                className="w-[100px] h-[50px] sm:w-[120px] sm:h-[60px] md:w-[150px] md:h-[80px] lg:w-[230px] lg:h-[90px] border p-2 bg-yellow flex justify-center items-center"
-              >
-                <img
-                  src={company.image}
-                  alt={company.alt}
-                  className="w-[100px] h-[30px] sm:w-[100px] sm:h-[35px] md:w-[120px] md:h-[40px] lg:w-[154px] lg:h-[48px] object-contain"
-                />
-              </div>
-            ))}
-          </div>
-        </div> */}
       </div>
     </section>
   );
