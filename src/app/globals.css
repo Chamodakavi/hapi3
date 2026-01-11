@@ -17,6 +17,8 @@
     /*  #04d36c*/
   --color-lightYellow: oklch(0.8561 0.1653 132.22);
   /* #a6e66e*/
+  --color-TransBlue:oklch(0.2599 0.0604 251.32 / 80.32%);
+  
 
   --font-montserrat: "Montserrat", system-ui, sans-serif;
 
