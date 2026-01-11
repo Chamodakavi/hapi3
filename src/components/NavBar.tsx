@@ -81,15 +81,15 @@ export default function Navbar() {
       className="fixed w-full bg-[#E3F451] border-b border-gray-200 py-4 top-0 z-50 transition-all"
     >
       <div className="container mx-auto px-5 flex items-center justify-between">
-        <div className="flex-shrink-0">
-          <Link href="#home" className="flex items-center gap-1">
+        <Link href="/#home" className="flex items-center gap-1">
+          <div className="flex-shrink-0">
             <img
               src="/images/logo.png"
               className="h-[58px] w-[61px] bg-yellow flex items-center justify-center"
               alt="logo.png"
             />
-          </Link>
-        </div>
+          </div>
+        </Link>
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center md:space-x-5 lg:space-x-8">
@@ -128,9 +128,12 @@ export default function Navbar() {
         </div>
 
         <div className="flex-shrink-0">
-          <div className="hidden md:block bg-[#FCFDE6] text-[16px] text-[#2B320D] font-bold py-2 px-6 border border-black hover:bg-gray-50 transition-colors cursor-pointer">
-            <Link href="/business-Registration"> Let's Talk </Link>
-          </div>
+          <Link href="/business-Registration">
+            {" "}
+            <div className="hidden md:block bg-[#FCFDE6] text-[16px] text-[#2B320D] font-bold py-2 px-6 border border-black hover:bg-gray-50 transition-colors cursor-pointer">
+              Let's Talk
+            </div>
+          </Link>
 
           <div className="block md:hidden">
             <button
