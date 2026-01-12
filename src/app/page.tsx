@@ -6,6 +6,7 @@ import Hero from "@/components/sections/Hero";
 import IntegratedSuite from "@/components/sections/IntegratedSuite";
 import MobileSec from "@/components/sections/MobileSec";
 import NocodeSec from "@/components/sections/NocodeSec";
+import RiskFreeSection from "@/components/sections/RiskFree";
 import Startup from "@/components/sections/Startup";
 import Image from "next/image";
 
@@ -16,10 +17,11 @@ export default function Home() {
       <Companies />
       <MobileSec />
       <BusinessType />
-      <Startup />
-      <IntegratedSuite />
-      <NocodeSec />
-      <GetStarted />
+      {/* <Startup /> */}
+      {/* <IntegratedSuite /> */}
+      {/* <NocodeSec /> */}
+      {/* <GetStarted /> */}
+      <RiskFreeSection />
     </>
   );
 }

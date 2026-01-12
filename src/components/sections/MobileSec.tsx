@@ -62,7 +62,7 @@ const trusts = [
 
 function MobileSec() {
   return (
-    <section className="my-20">
+    <section className="mt-20">
       <div className="container mx-auto px-5">
         {details.map((detail, id) => (
           <MobileCard
