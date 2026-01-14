@@ -103,3 +103,39 @@ body {
   }
   }
 }
+
+.mboile-card-btn{
+  display: flex;
+}
+.sm-btn{
+  display: none;
+}
+
+
+@media(max-width:396px){
+    .mboile-card-btn {
+      display: flex;
+      margin-left: 70%; 
+    }
+  
+    .sm-btn {
+      display: none;
+    }
+
+}
+
+@media(max-width:360px) {
+  .mboile-card-btn {
+    display: none;
+  }
+  .sm-btn{
+    display: flex;
+  }
+
+  .imgContainer {
+    top: 55%;
+    margin-left: 5%;
+    width: 80%;
+  }
+
+}

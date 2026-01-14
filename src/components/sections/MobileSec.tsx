@@ -1,6 +1,7 @@
 import { MoveRight } from "lucide-react";
 import React from "react";
 import MobileCard from "../MobileCard";
+import MobileCardSmall from "../MobileCardSmall";
 
 const details = [
   {
@@ -64,17 +65,32 @@ function MobileSec() {
   return (
     <section className="mt-20">
       <div className="container mx-auto px-5">
-        {details.map((detail, id) => (
-          <MobileCard
-            key={id}
-            id={id}
-            image={detail.image}
-            title={detail.title}
-            desc={detail.desc}
-            bgColor={detail.bgcolor}
-            btnColor={detail.btnColor}
-          />
-        ))}
+        <div className="hidden sm:block">
+          {details.map((detail, id) => (
+            <MobileCard
+              key={id}
+              id={id}
+              image={detail.image}
+              title={detail.title}
+              desc={detail.desc}
+              bgColor={detail.bgcolor}
+              btnColor={detail.btnColor}
+            />
+          ))}
+        </div>
+        <div className="block sm:hidden">
+          {details.map((detail, id) => (
+            <MobileCardSmall
+              key={id}
+              // id={id}
+              // image={detail.image}
+              // title={detail.title}
+              // desc={detail.desc}
+              // bgColor={detail.bgcolor}
+              // btnColor={detail.btnColor}
+            />
+          ))}
+        </div>
 
         {/* people */}
         <div>
