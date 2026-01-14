@@ -115,7 +115,7 @@ body {
 @media(max-width:396px){
     .mboile-card-btn {
       display: flex;
-      margin-left: 70%; 
+      /* margin-left: 70%;  */
     }
   
     .sm-btn {
@@ -133,9 +133,10 @@ body {
   }
 
   .imgContainer {
-    top: 55%;
-    margin-left: 5%;
-    width: 80%;
+    top: 63%;
+    /* margin-left: 5%;
+    width: 80%; */
+    left: 15% !important;
   }
 
 }

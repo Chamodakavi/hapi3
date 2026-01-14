@@ -99,8 +99,8 @@ function RiskFree() {
                 vulputate libero et velit interdum, ac aliquet odio mattis.
                 litora torquent per conubia nostra,{" "}
               </p>
-              <div className="cursor-pointer w-30 font-semibold text-darkBlue">
-                <p className="hover:text-white">Learn more</p>
+              <div className="cursor-pointer w-30 font-semibold text-darkBlue ">
+                <p className="hover:text-white ">Learn more</p>
               </div>
             </div>
           </div>
@@ -117,7 +117,7 @@ function RiskFree() {
             vulputate libero et velit interdum, ac aliquet odio mattis. litora
             torquent per conubia nostra.
           </p>
-          <button className="bg-[#D7F051] text-[#001D3D] font-bold py-3 px-12 border-2 border-black  hover:shadow-none cursor-pointer hover:bg-white ">
+          <button className="bg-[#D7F051] text-[#001D3D] font-bold py-3 px-12 border-2 border-black  cursor-pointer  transition-colors shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-x-[2px] active:translate-y-[2px] cursor-pointer">
             Join Now
           </button>
         </div>
