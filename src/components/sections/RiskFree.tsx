@@ -17,7 +17,7 @@ function RiskFree() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 space-y-20 sm:space-y-10">
           {/* card 1 */}
           <div className=" w-full h-[400] sm:h-[450px] md:h-[400] lg:h-[470] ">
-            <div className="w-[85%] h-[100%] bg-Green border-1 p-5">
+            <div className="w-[85%] h-[100%] bg-Green border-2 p-5">
               <div className="grid grid-cols-2">
                 <div className="">
                   <h3 className="text-lg md:text-[34px] text-darkBlue font-bold">
@@ -49,7 +49,7 @@ function RiskFree() {
               </div>
             </div>
             {/* card bottom */}
-            <div className="relative bottom-65 sm:bottom-60 md:bottom-50 lg:bottom-70 bg-yellow border-1 p-5 w-[95%]">
+            <div className="relative bottom-65 sm:bottom-60 md:bottom-50 lg:bottom-70 bg-yellow border-2 p-5 w-[95%]">
               <h3 className="text-[23px] text-darkBlue font-semibold">
                 Free for your first 2 months.
               </h3>
@@ -65,7 +65,7 @@ function RiskFree() {
           </div>
           {/* card 2 */}
           <div className=" w-full h-[400] sm:h-[450px] md:h-[400] lg:h-[470] ">
-            <div className="w-[85%] h-[100%] bg-Green border-1 p-5">
+            <div className="w-[85%] h-[100%] bg-Green border-2 p-5">
               <div className="grid grid-cols-2">
                 <div className="">
                   <h3 className="text-lg md:text-[34px] text-darkBlue font-bold">
@@ -90,7 +90,7 @@ function RiskFree() {
                 </div>
               </div>
             </div>
-            <div className="relative bottom-65 sm:bottom-60 md:bottom-50 lg:bottom-70 bg-yellow border-1 p-5 w-[95%]">
+            <div className="relative bottom-65 sm:bottom-60 md:bottom-50 lg:bottom-70 bg-yellow border-2 p-5 w-[95%]">
               <h3 className="text-[23px] text-darkBlue font-semibold">
                 Free for your first 2 months.
               </h3>
