@@ -81,11 +81,12 @@ export default function Navbar() {
       className="fixed w-full bg-[#E3F451] border-b border-gray-200 py-4 top-0 z-50 transition-all"
     >
       <div className="container mx-auto px-5 flex items-center justify-between">
-        <Link href="/#home" className="flex items-center gap-1">
+        {/* company logo */}
+        <Link href="/" className="flex items-center gap-1">
           <div className="flex-shrink-0">
             <img
               src="/images/logo.png"
-              className="h-[58px] w-[61px] bg-yellow flex items-center justify-center"
+              className="h-[33px] w-[36px] md:h-[45px] md:w-[40px] lg:h-[58px] lg:w-[61px] bg-yellow flex items-center justify-center"
               alt="logo.png"
             />
           </div>
@@ -135,7 +136,12 @@ export default function Navbar() {
             </div>
           </Link>
 
-          <div className="block md:hidden">
+          <div className="flex md:hidden gap-5">
+            <Link href={"/business-Registration"}>
+              <button className="w-full bg-white text-black font-bold px-2 py-2 border border-black text-sm">
+                Let's Talk
+              </button>
+            </Link>
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="focus:outline-none text-[#2B320D]"
@@ -173,9 +179,9 @@ export default function Navbar() {
             );
           })}
 
-          <button className="w-full bg-white text-black font-bold py-3 border border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:shadow-none">
+          {/* <button className="w-full bg-white text-black font-bold py-3 border border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:shadow-none">
             Let's Talk
-          </button>
+          </button> */}
         </div>
       </div>
     </nav>
