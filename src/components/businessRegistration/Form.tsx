@@ -1,7 +1,6 @@
 "use client";
 
-import React from "react";
-import { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
 function Form() {
@@ -11,22 +10,23 @@ function Form() {
   }));
 
   const businessSizeArray = [
-    {
-      id: 1,
-      size: "0 - 50",
-    },
-    {
-      id: 2,
-      size: "50 - 150",
-    },
-    {
-      id: 3,
-      size: "150+",
-    },
+    { id: 1, size: "0 - 50" },
+    { id: 2, size: "50 - 150" },
+    { id: 3, size: "150+" },
   ];
 
+  // --- REFS ---
+  const logoInputRef = useRef<HTMLInputElement>(null);
+  const bannerInputRef = useRef<HTMLInputElement>(null);
+
+  // --- STATE ---
+  const [logoPreview, setLogoPreview] = useState<string | null>(null);
+  const [bannerPreview, setBannerPreview] = useState<string | null>(null);
+
   const router = useRouter();
-  const [formData, setFormData] = useState({
+
+  // Note: businessLogo and businessBanner will hold File objects, not just strings
+  const [formData, setFormData] = useState<any>({
     businessName: "",
     businessCategory: "",
     businessSize: "",
@@ -35,68 +35,131 @@ function Form() {
     instagramURL: "",
     tikTokURL: "",
     websiteURL: "",
+    businessLogo: null, // Changed to null initially
+    businessBanner: null, // Changed to null initially
   });
 
-  // business type
-  const [businessType, setBusinessType] = useState<number | null>(null);
-  const handleBusinessType = (id: number) => {
-    setBusinessType(id);
-    const selectedOption = businessTypes.find((type) => type.id === id);
+  // ==========================
+  // LOGO HANDLERS
+  // ==========================
+  const handleLogoBoxClick = () => {
+    if (!logoPreview) logoInputRef.current?.click();
+  };
 
-    if (selectedOption) {
-      setFormData({
-        ...formData,
-        businessCategory: selectedOption.label,
-      });
+  const handleLogoFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      // 1. Set Preview
+      setLogoPreview(URL.createObjectURL(file));
+      // 2. Update Form Data with actual File object
+      setFormData({ ...formData, businessLogo: file });
     }
   };
 
-  // business size
+  const handleRemoveLogo = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setLogoPreview(null);
+    // Remove file from state
+    setFormData({ ...formData, businessLogo: null });
+    if (logoInputRef.current) logoInputRef.current.value = "";
+  };
+
+  // ==========================
+  // BANNER HANDLERS
+  // ==========================
+  const handleBannerBoxClick = () => {
+    if (!bannerPreview) bannerInputRef.current?.click();
+  };
+
+  const handleBannerFileChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      // 1. Set Preview
+      setBannerPreview(URL.createObjectURL(file));
+      // 2. Update Form Data with actual File object
+      setFormData({ ...formData, businessBanner: file });
+    }
+  };
+
+  const handleRemoveBanner = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setBannerPreview(null);
+    // Remove file from state
+    setFormData({ ...formData, businessBanner: null });
+    if (bannerInputRef.current) bannerInputRef.current.value = "";
+  };
+
+  // ==========================
+  // FORM HANDLERS
+  // ==========================
+  const handleBusinessType = (id: number) => {
+    const selectedOption = businessTypes.find((type) => type.id === id);
+    if (selectedOption) {
+      setFormData({ ...formData, businessCategory: selectedOption.label });
+    }
+  };
+
+  const [businessType, setBusinessType] = useState<number | null>(null);
+  const handleBusinessTypeClick = (id: number) => {
+    setBusinessType(id);
+    handleBusinessType(id);
+  };
+
   const [businessSize, setBusinessSize] = useState<number | null>(null);
-  const handleBusinessSize = (id: number) => {
+  const handleBusinessSizeClick = (id: number) => {
     setBusinessSize(id);
     const selectedOption = businessSizeArray.find((type) => type.id === id);
-
     if (selectedOption) {
-      setFormData({
-        ...formData,
-        businessSize: selectedOption.size,
-      });
+      setFormData({ ...formData, businessSize: selectedOption.size });
     }
   };
 
-  // form data fill
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // data submit
+  // --- UPDATED SUBMIT HANDLER ---
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
+      // 1. Create FormData object
+      const dataPayload = new FormData();
+
+      // 2. Append all text fields
+      dataPayload.append("businessName", formData.businessName);
+      dataPayload.append("businessCategory", formData.businessCategory);
+      dataPayload.append("businessSize", formData.businessSize);
+      dataPayload.append("businessContact", formData.businessContact);
+      dataPayload.append("businessLocation", formData.businessLocation);
+      dataPayload.append("instagramURL", formData.instagramURL);
+      dataPayload.append("tikTokURL", formData.tikTokURL);
+      dataPayload.append("websiteURL", formData.websiteURL);
+
+      // 3. Append Files (check if they exist first)
+      if (formData.businessLogo) {
+        dataPayload.append("businessLogo", formData.businessLogo);
+      }
+      if (formData.businessBanner) {
+        dataPayload.append("businessBanner", formData.businessBanner);
+      }
+
+      // 4. Send Request
       const response = await fetch("/api/register-business", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: dataPayload,
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        alert(` 
-      name = ${formData.businessName} 
-       category = ${formData.businessCategory} 
-       size = ${formData.businessSize}
-      contact = ${formData.businessContact} 
-      location = ${formData.businessLocation} 
-      insta = ${formData.instagramURL} 
-      tiktok = ${formData.tikTokURL} 
-      web = ${formData.websiteURL} 
-      data added.`);
-        // --- NEW CODE: Reset the form ---
+        alert("Data added successfully.");
+
+        // Reset Form
         setFormData({
           businessName: "",
           businessContact: "",
@@ -106,13 +169,20 @@ function Form() {
           instagramURL: "",
           tikTokURL: "",
           websiteURL: "",
+          businessLogo: null,
+          businessBanner: null,
         });
+        setLogoPreview(null);
+        setBannerPreview(null);
+        setBusinessType(null);
+        setBusinessSize(null);
+
         alert(data.message);
-        // --------------------------------
       } else {
         alert(`Error: ${data.error}`);
       }
     } catch (error) {
+      console.error(error);
       alert("Something went wrong.");
     }
   };
@@ -120,7 +190,6 @@ function Form() {
   return (
     <section className="bg-[#FFFDF2] min-h-screen py-10 mt-30 lg:mt-35">
       <div className="container mx-auto px-5 ">
-        {/* Header */}
         <h2 className="text-3xl md:text-[40px] font-bold text-[#0f172a] mb-2 leading-tight">
           Set up your business
         </h2>
@@ -154,7 +223,7 @@ function Form() {
                 <button
                   key={type.id}
                   type="button"
-                  onClick={() => handleBusinessType(type.id)}
+                  onClick={() => handleBusinessTypeClick(type.id)}
                   className={`border border-gray-400 py-3 text-sm font-medium ${
                     businessType == type.id ? "bg-[#EBFD58]" : "bg-transparent"
                   } hover:bg-[#EBFD58] transition-colors text-gray-800 cursor-pointer`}
@@ -176,7 +245,7 @@ function Form() {
                   <button
                     key={id}
                     type="button"
-                    onClick={() => handleBusinessSize(array.id)}
+                    onClick={() => handleBusinessSizeClick(array.id)}
                     className={`border border-gray-400 py-3 text-sm font-medium ${
                       businessSize == array.id
                         ? "bg-[#EBFD58]"
@@ -216,9 +285,7 @@ function Form() {
               placeholder="Enter Address"
               className="w-full border border-gray-400 bg-transparent p-3 mb-2 text-gray-800 focus:outline-none focus:border-black"
             />
-            {/* Map Placeholder*/}
             <div className="w-full h-64 bg-blue-50 border-4 border-blue-400 relative overflow-hidden">
-              {/* map */}
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d31691.04971870136!2d79.91983291876365!3d6.844820323611778!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1sccc!5e0!3m2!1sen!2slk!4v1768136304447!5m2!1sen!2slk"
                 width="100%"
@@ -268,84 +335,186 @@ function Form() {
             </div>
           </div>
 
-          {/* Business Logo */}
+          {/* ====================== 
+            BUSINESS LOGO SECTION 
+            ======================
+          */}
           <div>
             <label className="block text-sm font-bold text-gray-800 mb-2">
               Business Logo
             </label>
-            <div className="w-full h-48 bg-[#EBFD58] border border-gray-400 flex flex-col items-center justify-center cursor-pointer hover:opacity-90 transition-opacity">
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="mb-2 w-8 h-8 text-gray-800"
-              >
-                <path
-                  d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M17 8L12 3L7 8"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M12 3V15"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <span className="font-semibold text-gray-800">Upload Image</span>
+            <div
+              onClick={handleLogoBoxClick}
+              className={`w-full h-48 border border-gray-400 flex flex-col items-center justify-center cursor-pointer transition-opacity relative
+                ${logoPreview ? "bg-white" : "bg-[#EBFD58] hover:opacity-90"}
+              `}
+            >
+              {logoPreview ? (
+                <div className="relative w-full h-full p-2 flex items-center justify-center">
+                  <img
+                    src={logoPreview}
+                    alt="Logo Preview"
+                    className="max-w-full max-h-full object-contain rounded-md"
+                  />
+                  <button
+                    onClick={handleRemoveLogo}
+                    className="absolute top-2 right-2 bg-white rounded-full p-1 shadow-md hover:bg-gray-100 border border-gray-200"
+                    type="button"
+                    title="Remove logo"
+                    aria-label="Remove logo"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5 text-gray-600"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="mb-2 w-8 h-8 text-gray-800"
+                  >
+                    <path
+                      d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M17 8L12 3L7 8"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M12 3V15"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                  <span className="font-semibold text-gray-800">
+                    Upload Image
+                  </span>
+                </>
+              )}
             </div>
+            <input
+              type="file"
+              ref={logoInputRef}
+              onChange={handleLogoFileChange}
+              className="hidden"
+              accept="image/*"
+            />
           </div>
 
-          {/* Business Banner */}
+          {/* ====================== 
+            BUSINESS BANNER SECTION 
+            ======================
+          */}
           <div>
             <label className="block text-sm font-bold text-gray-800 mb-2">
               Business Banner
             </label>
-            <div className="w-full h-48 bg-[#EBFD58] border border-gray-400 flex flex-col items-center justify-center cursor-pointer hover:opacity-90 transition-opacity">
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="mb-2 w-8 h-8 text-gray-800"
-              >
-                <path
-                  d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M17 8L12 3L7 8"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M12 3V15"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <span className="font-semibold text-gray-800">Upload Image</span>
+            <div
+              onClick={handleBannerBoxClick}
+              className={`w-full h-48 border border-gray-400 flex flex-col items-center justify-center cursor-pointer transition-opacity relative
+                ${bannerPreview ? "bg-white" : "bg-[#EBFD58] hover:opacity-90"}
+              `}
+            >
+              {bannerPreview ? (
+                <div className="relative w-full h-full p-2 flex items-center justify-center">
+                  <img
+                    src={bannerPreview}
+                    alt="Banner Preview"
+                    className="max-w-full max-h-full object-contain rounded-md"
+                  />
+                  <button
+                    onClick={handleRemoveBanner}
+                    className="absolute top-2 right-2 bg-white rounded-full p-1 shadow-md hover:bg-gray-100 border border-gray-200"
+                    type="button"
+                    title="Remove banner"
+                    aria-label="Remove banner"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5 text-gray-600"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="mb-2 w-8 h-8 text-gray-800"
+                  >
+                    <path
+                      d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M17 8L12 3L7 8"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M12 3V15"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                  <span className="font-semibold text-gray-800">
+                    Upload Image
+                  </span>
+                </>
+              )}
             </div>
+            <input
+              type="file"
+              ref={bannerInputRef}
+              onChange={handleBannerFileChange}
+              className="hidden"
+              accept="image/*"
+            />
           </div>
 
           {/* Submit Button */}
