@@ -1,0 +1,24 @@
+   console.log("--- DATA RECEIVED ON SERVER ---");
+    console.log("Name:", businessName);
+    console.log("Category:", businessCategory);
+    console.log("Size:", businessSize);
+    console.log("Contact:", businessContact);
+    console.log("Location:", businessLocation);
+    console.log("Instagram:", instagramURL);
+    console.log("TikTok:", tikTokURL);
+    console.log("Website:", websiteURL);
+    
+    
+    if (businessLogo && typeof businessLogo === 'object' && 'name' in businessLogo) {
+       console.log("Logo File:", (businessLogo as File).name, (businessLogo as File).size, "bytes");
+    } else {
+       console.log("Logo:", "No file uploaded");
+    }
+
+    if (businessBanner && typeof businessBanner === 'object' && 'name' in businessBanner) {
+       console.log("Banner File:", (businessBanner as File).name, (businessBanner as File).size, "bytes");
+    } else {
+       console.log("Banner:", "No file uploaded");
+    }
+
+    console.log("-------------------------------");
