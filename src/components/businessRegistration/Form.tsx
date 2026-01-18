@@ -325,6 +325,7 @@ function Form() {
               Business Name
             </label>
             <input
+              required
               name="businessName"
               type="text"
               value={formData.businessName}
@@ -382,6 +383,7 @@ function Form() {
                 Business Contact
               </label>
               <input
+                required
                 name="businessContact"
                 onChange={handleChange}
                 value={formData.businessContact}
@@ -398,6 +400,7 @@ function Form() {
               Business Location
             </label>
             <input
+              required
               name="businessLocation"
               onChange={handleChange}
               value={formData.businessLocation}
