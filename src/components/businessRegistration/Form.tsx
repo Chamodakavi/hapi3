@@ -23,9 +23,13 @@ function Form() {
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
   const [bannerPreview, setBannerPreview] = useState<string | null>(null);
 
+  // --- NEW STATE: SUBMISSION STATUS ---
+  // 'idle' | 'loading' | 'success' | 'error'
+  const [submitStatus, setSubmitStatus] = useState<string>("idle");
+  const [modalMessage, setModalMessage] = useState<string>("");
+
   const router = useRouter();
 
-  // Note: businessLogo and businessBanner will hold File objects, not just strings
   const [formData, setFormData] = useState<any>({
     businessName: "",
     businessCategory: "",
@@ -35,8 +39,8 @@ function Form() {
     instagramURL: "",
     tikTokURL: "",
     websiteURL: "",
-    businessLogo: null, // Changed to null initially
-    businessBanner: null, // Changed to null initially
+    businessLogo: null,
+    businessBanner: null,
   });
 
   // ==========================
@@ -49,9 +53,7 @@ function Form() {
   const handleLogoFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      // 1. Set Preview
       setLogoPreview(URL.createObjectURL(file));
-      // 2. Update Form Data with actual File object
       setFormData({ ...formData, businessLogo: file });
     }
   };
@@ -59,7 +61,6 @@ function Form() {
   const handleRemoveLogo = (e: React.MouseEvent) => {
     e.stopPropagation();
     setLogoPreview(null);
-    // Remove file from state
     setFormData({ ...formData, businessLogo: null });
     if (logoInputRef.current) logoInputRef.current.value = "";
   };
@@ -72,13 +73,11 @@ function Form() {
   };
 
   const handleBannerFileChange = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const file = event.target.files?.[0];
     if (file) {
-      // 1. Set Preview
       setBannerPreview(URL.createObjectURL(file));
-      // 2. Update Form Data with actual File object
       setFormData({ ...formData, businessBanner: file });
     }
   };
@@ -86,7 +85,6 @@ function Form() {
   const handleRemoveBanner = (e: React.MouseEvent) => {
     e.stopPropagation();
     setBannerPreview(null);
-    // Remove file from state
     setFormData({ ...formData, businessBanner: null });
     if (bannerInputRef.current) bannerInputRef.current.value = "";
   };
@@ -117,7 +115,7 @@ function Form() {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -126,11 +124,12 @@ function Form() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // 1. Set Loading State
+    setSubmitStatus("loading");
+
     try {
-      // 1. Create FormData object
       const dataPayload = new FormData();
 
-      // 2. Append all text fields
       dataPayload.append("businessName", formData.businessName);
       dataPayload.append("businessCategory", formData.businessCategory);
       dataPayload.append("businessSize", formData.businessSize);
@@ -140,7 +139,6 @@ function Form() {
       dataPayload.append("tikTokURL", formData.tikTokURL);
       dataPayload.append("websiteURL", formData.websiteURL);
 
-      // 3. Append Files (check if they exist first)
       if (formData.businessLogo) {
         dataPayload.append("businessLogo", formData.businessLogo);
       }
@@ -148,7 +146,6 @@ function Form() {
         dataPayload.append("businessBanner", formData.businessBanner);
       }
 
-      // 4. Send Request
       const response = await fetch("/api/register-business", {
         method: "POST",
         body: dataPayload,
@@ -157,9 +154,11 @@ function Form() {
       const data = await response.json();
 
       if (response.ok) {
-        alert("Data added successfully.");
+        // 2. Set Success State
+        setSubmitStatus("success");
+        setModalMessage("Your business profile has been created successfully.");
 
-        // Reset Form
+        // Reset Form Logic
         setFormData({
           businessName: "",
           businessContact: "",
@@ -176,19 +175,119 @@ function Form() {
         setBannerPreview(null);
         setBusinessType(null);
         setBusinessSize(null);
-
-        alert(data.message);
       } else {
-        alert(`Error: ${data.error}`);
+        // 3. Set Error State (API Error)
+        setSubmitStatus("error");
+        setModalMessage(data.error || "Failed to register business.");
       }
     } catch (error) {
       console.error(error);
-      alert("Something went wrong.");
+      // 3. Set Error State (Network/Catch Error)
+      setSubmitStatus("error");
+      setModalMessage("Something went wrong. Please try again.");
     }
   };
 
+  // Helper to close modal
+  const closeModal = () => {
+    setSubmitStatus("idle");
+    setModalMessage("");
+  };
+
   return (
-    <section className="bg-[#FFFDF2] min-h-screen py-10 mt-30 lg:mt-35">
+    <section className="bg-[#FFFDF2] min-h-screen py-10 mt-30 lg:mt-35 relative">
+      {/* =======================
+          NOTIFICATION MODAL
+      ======================= */}
+      {submitStatus !== "idle" && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="bg-[#1e293b] rounded-2xl p-8 max-w-sm w-full text-center shadow-2xl border border-slate-700 transform transition-all scale-100">
+            {/* 1. LOADING STATE */}
+            {submitStatus === "loading" && (
+              <div className="flex flex-col items-center">
+                {/* Infinite Rotate Spinner */}
+                <div className="w-16 h-16 border-4 border-t-[#00D678] border-slate-600 rounded-full animate-spin mb-6"></div>
+                <h3 className="text-xl font-bold text-white mb-2">
+                  Processing
+                </h3>
+                <p className="text-slate-400 text-sm">
+                  Please wait while we set up your profile...
+                </p>
+              </div>
+            )}
+
+            {/* 2. SUCCESS STATE */}
+            {submitStatus === "success" && (
+              <div className="flex flex-col items-center">
+                {/* Green Tick Animation */}
+                <div className="w-20 h-20 bg-emerald-500/10 rounded-full flex items-center justify-center mb-6">
+                  <svg
+                    className="w-10 h-10 text-[#00D678]"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="3"
+                      d="M5 13l4 4L19 7"
+                    ></path>
+                  </svg>
+                </div>
+                <h3 className="text-2xl font-bold text-white mb-2">
+                  Payment successful
+                </h3>
+                <p className="text-slate-400 text-sm mb-6">{modalMessage}</p>
+                <button
+                  onClick={closeModal}
+                  className="w-full bg-[#00D678] hover:bg-[#00b566] text-black font-bold py-3 px-4 rounded-lg transition-colors"
+                >
+                  Continue
+                </button>
+              </div>
+            )}
+
+            {/* 3. ERROR STATE */}
+            {submitStatus === "error" && (
+              <div className="flex flex-col items-center">
+                {/* Red X Mark */}
+                <div className="w-20 h-20 bg-red-500/10 rounded-full flex items-center justify-center mb-6">
+                  <svg
+                    className="w-10 h-10 text-red-500"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="3"
+                      d="M6 18L18 6M6 6l12 12"
+                    ></path>
+                  </svg>
+                </div>
+                <h3 className="text-2xl font-bold text-white mb-2">
+                  Submission Failed
+                </h3>
+                <p className="text-slate-400 text-sm mb-6">{modalMessage}</p>
+                <button
+                  onClick={closeModal}
+                  className="w-full bg-slate-700 hover:bg-slate-600 text-white font-bold py-3 px-4 rounded-lg transition-colors"
+                >
+                  Close & Try Again
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* =======================
+          MAIN FORM CONTENT
+      ======================= */}
       <div className="container mx-auto px-5 ">
         <h2 className="text-3xl md:text-[40px] font-bold text-[#0f172a] mb-2 leading-tight">
           Set up your business
@@ -335,10 +434,7 @@ function Form() {
             </div>
           </div>
 
-          {/* ====================== 
-            BUSINESS LOGO SECTION 
-            ======================
-          */}
+          {/* BUSINESS LOGO SECTION */}
           <div>
             <label className="block text-sm font-bold text-gray-800 mb-2">
               Business Logo
@@ -426,10 +522,7 @@ function Form() {
             />
           </div>
 
-          {/* ====================== 
-            BUSINESS BANNER SECTION 
-            ======================
-          */}
+          {/* BUSINESS BANNER SECTION */}
           <div>
             <label className="block text-sm font-bold text-gray-800 mb-2">
               Business Banner
@@ -521,9 +614,12 @@ function Form() {
           <div className="flex justify-end pt-4">
             <button
               type="submit"
-              className="bg-[#00D678] text-black font-bold py-3 px-10 hover:bg-[#00b566] transition-colors shadow-sm"
+              disabled={submitStatus === "loading"}
+              className="bg-[#00D678] text-black font-bold py-3 px-10 hover:bg-[#00b566] transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Create Profile
+              {submitStatus === "loading"
+                ? "Creating Profile..."
+                : "Create Profile"}
             </button>
           </div>
         </form>
