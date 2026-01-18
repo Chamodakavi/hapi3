@@ -156,7 +156,10 @@ function Form() {
       if (response.ok) {
         // 2. Set Success State
         setSubmitStatus("success");
-        setModalMessage("Your business profile has been created successfully.");
+        // We can append generic text to match the Lorem Ipsum style if desired, or keep your custom message
+        setModalMessage(
+          "Your business profile has been created successfully. Welcome aboard!",
+        );
 
         // Reset Form Logic
         setFormData({
@@ -201,7 +204,17 @@ function Form() {
       ======================= */}
       {submitStatus !== "idle" && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="bg-[#1e293b] rounded-2xl p-8 max-w-sm w-full text-center shadow-2xl border border-slate-700 transform transition-all scale-100">
+          {/* Dynamic Container Styles based on Status */}
+          <div
+            className={`
+              rounded-lg p-8 max-w-lg w-full text-center shadow-2xl transform transition-all scale-100
+              ${
+                submitStatus === "success"
+                  ? "bg-[#EBFD58] border border-yellow-500" // Lime Theme for Success
+                  : "bg-[#1e293b] border border-slate-700" // Dark Theme for Loading/Error
+              }
+            `}
+          >
             {/* 1. LOADING STATE */}
             {submitStatus === "loading" && (
               <div className="flex flex-col items-center">
@@ -216,13 +229,13 @@ function Form() {
               </div>
             )}
 
-            {/* 2. SUCCESS STATE */}
+            {/* 2. SUCCESS STATE (Updated to Match Image) */}
             {submitStatus === "success" && (
-              <div className="flex flex-col items-center">
-                {/* Green Tick Animation */}
-                <div className="w-20 h-20 bg-emerald-500/10 rounded-full flex items-center justify-center mb-6">
+              <div className="flex flex-col items-center py-6">
+                {/* Green Circle Icon with Check */}
+                <div className="w-20 h-20 bg-[#00D678] rounded-full flex items-center justify-center mb-6 shadow-sm">
                   <svg
-                    className="w-10 h-10 text-[#00D678]"
+                    className="w-10 h-10 text-[#EBFD58]" // Checkmark color matches bg
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -231,20 +244,28 @@ function Form() {
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      strokeWidth="3"
+                      strokeWidth="4"
                       d="M5 13l4 4L19 7"
                     ></path>
                   </svg>
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-2">
-                  Successfully Registered
+
+                {/* Title */}
+                <h3 className="text-3xl font-bold text-[#0f172a] mb-3">
+                  Registration Successfully
                 </h3>
-                <p className="text-slate-400 text-sm mb-6">{modalMessage}</p>
+
+                {/* Description */}
+                <p className="text-gray-700 text-sm mb-10 leading-relaxed px-4">
+                  {modalMessage}
+                </p>
+
+                {/* Back Button */}
                 <button
                   onClick={closeModal}
-                  className="w-full bg-[#00D678] hover:bg-[#00b566] text-black font-bold py-3 px-4 rounded-lg transition-colors"
+                  className="bg-[#00D678] hover:bg-[#00b566] text-[#0f172a] font-bold py-3 px-12 rounded shadow-md transition-colors"
                 >
-                  Continue
+                  Back
                 </button>
               </div>
             )}
